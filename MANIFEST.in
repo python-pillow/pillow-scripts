@@ -1,0 +1,3 @@
+include *.py
+graft Scripts
+global-exclude .git*
