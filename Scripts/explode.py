@@ -89,7 +89,7 @@ im = Image.open(infile)
 
 if html:
     file, ext = os.path.splitext(outfile)
-    html = open(file+".html", "w")
+    html = open(file.split("%")[0]+".html", "w")
     html.write("<html>\n<body>\n")
 
 while True:
