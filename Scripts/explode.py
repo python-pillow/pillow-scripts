@@ -51,6 +51,7 @@ class Interval(object):
 # --------------------------------------------------------------------
 # main program
 
+
 html = 0
 
 if sys.argv[1:2] == ["-h"]:
@@ -89,8 +90,16 @@ im = Image.open(infile)
 
 if html:
     file, ext = os.path.splitext(outfile)
-    html = open(file+".html", "w")
-    html.write("<html>\n<body>\n")
+    html = open(file.split("%")[0]+".html", "w")
+    html.write("""<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>%s</title>
+</head>
+<body>
+""" % file.split('%')[0])
+
+htmlImgs = []
 
 while True:
 
@@ -99,7 +108,8 @@ while True:
         print(outfile % ix)
 
         if html:
-            html.write("<img src='%s'><br>\n" % outfile % ix)
+            htmlImgs.append("<img src=\"%s\" alt=\"%s\">" % (outfile % ix,
+                                                             file % ix))
 
     try:
         im.seek(ix)
@@ -109,4 +119,6 @@ while True:
     ix += 1
 
 if html:
+    if htmlImgs:
+        html.write("<br>\n".join(htmlImgs) + "\n")
     html.write("</body>\n</html>\n")
