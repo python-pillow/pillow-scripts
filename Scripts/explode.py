@@ -90,7 +90,13 @@ im = Image.open(infile)
 if html:
     file, ext = os.path.splitext(outfile)
     html = open(file.split("%")[0]+".html", "w")
-    html.write("<html>\n<body>\n")
+    html.write("""<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>%s</title>
+</head>
+<body>
+""" % file.split('%')[0])
 
 while True:
 
@@ -99,7 +105,7 @@ while True:
         print(outfile % ix)
 
         if html:
-            html.write("<img src='%s'><br>\n" % outfile % ix)
+            html.write("<img src=\"%s\" alt=\"%s\"><br>\n" % (outfile % ix, file % ix))
 
     try:
         im.seek(ix)
