@@ -43,6 +43,7 @@
     <h1>Pillow Scripts</h1>
     <p class="subtitle">The classic PIL command-line utilities &amp; Tk demos,<br>kept alive for the Pillow era</p>
     <p class="small"><code>pip install pillow-scripts</code> · github.com/python-pillow/pillow-scripts</p>
+    <aside class="notes">These are the small utilities and demos that shipped with PIL, still installable today as their own package.</aside>
   </section>
 
   <!-- What is it -->
@@ -55,7 +56,7 @@
       <li>Split out from <code>Pillow@9fcc58d</code> into its own package</li>
       <li>Every <code>Scripts/*.py</code> is installed onto your <code>PATH</code></li>
     </ul>
-    <aside class="notes">Pillow core no longer ships these; this repo preserves them as a separate PyPI package.</aside>
+    <aside class="notes">Pillow itself stopped shipping these scripts in 2017, so they now live in this repo and on PyPI as their own package.</aside>
   </section>
 
   <!-- Inventory -->
@@ -72,6 +73,7 @@
       </tbody>
     </table>
     <p class="small">13 scripts · ~1,500 lines of Python</p>
+    <aside class="notes">There are thirteen scripts in five groups, from one-line command-line tools to interactive Tk demos.</aside>
   </section>
 
   <!-- File utilities (vertical stack) -->
@@ -80,6 +82,7 @@
       <h2>File utilities</h2>
       <p>Small, focused CLIs in the Unix tradition</p>
       <p class="small">Press &darr; to explore each one</p>
+      <aside class="notes">These four tools each do one job, and you can chain them together in a shell pipeline.</aside>
     </section>
 
     <section>
@@ -96,6 +99,7 @@ pilconvert.py -g -o -q 85 photo.png photo.jpg
 pilconvert.py -f
       </code></pre>
       <p class="small"><code>-c</code> format · <code>-g</code> grey · <code>-p</code> palette · <code>-r</code> RGB · <code>-o</code> optimize · <code>-q</code> quality</p>
+      <aside class="notes">pilconvert converts between any two formats Pillow supports, with options for greyscale, palette and JPEG quality.</aside>
     </section>
 
     <section>
@@ -110,6 +114,7 @@ icon.png: PNG 32x32 P
 $ pilfile.py -v -i scan.tif
       </code></pre>
       <p class="small"><code>-f</code> formats · <code>-i</code> info · <code>-v</code> verify · <code>-q</code> quiet</p>
+      <aside class="notes">pilfile tells you an image's format, size and mode, and with -v it also checks that the file isn't corrupt.</aside>
     </section>
 
     <section>
@@ -119,6 +124,7 @@ $ pilfile.py -v -i scan.tif
 pilfont.py "fonts/*.bdf"
 # -> writes .pil + .pbm pairs for ImageFont.load()
       </code></pre>
+      <aside class="notes">pilfont turns X11 BDF and PCF bitmap fonts into the .pil format that ImageFont.load() reads.</aside>
     </section>
 
     <section>
@@ -132,6 +138,7 @@ pilprint.py photo.jpg > photo.ps
 pilprint.py -c -P office photo.jpg
       </code></pre>
       <p class="small"><code>-c</code> colour · <code>-d</code> debug · <code>-p</code> lpr · <code>-P</code> printer</p>
+      <aside class="notes">pilprint lays an image out on a letter-sized page as PostScript and can send it straight to a printer with lpr.</aside>
     </section>
   </section>
 
@@ -156,6 +163,7 @@ explode.py anim.gif f.png 1-10,15
         </code></pre>
       </div>
     </div>
+    <aside class="notes">gifmaker turns an animation into a GIF in two lines of code, and explode splits one back into numbered frames.</aside>
   </section>
 
   <!-- pildriver -->
@@ -169,6 +177,7 @@ explode.py anim.gif f.png 1-10,15
         <li>Run with arguments, or interactively as a REPL</li>
         <li>Deliberately doesn't catch exceptions: errors are diagnostics</li>
       </ul>
+      <aside class="notes">Eric S. Raymond's pildriver is a stack-based calculator where every operator works on whole images.</aside>
     </section>
 
     <section>
@@ -185,6 +194,7 @@ $ pildriver.py
 pildriver> verbose 1
 pildriver> thumbnail 128 128 open big.jpg
       </code></pre>
+      <aside class="notes">Read each command from right to left: open loads an image onto the stack, and the next operator to its left uses it.</aside>
     </section>
 
     <section>
@@ -200,6 +210,7 @@ pildriver> thumbnail 128 128 open big.jpg
           <tr><th>ImageEnhance</th><td>color · contrast · brightness · sharpness</td></tr>
         </tbody>
       </table>
+      <aside class="notes">The operators cover most of the core Image API plus ImageChops and ImageEnhance.</aside>
     </section>
   </section>
 
@@ -216,6 +227,7 @@ pildriver> thumbnail 128 128 open big.jpg
         <tr><th><code>painter</code></th><td>A paint program; 32&times;32 tiles keep Tk redraws fast</td></tr>
       </tbody>
     </table>
+    <aside class="notes">The Tk demos show how ImageTk connects Pillow images to tkinter widgets for viewing, playback and live editing.</aside>
   </section>
 
   <section>
@@ -232,6 +244,7 @@ for x in range(0, xsize, tilesize):
         self.create_image(x, y, image=tile, anchor=tkinter.NW)
         self.tile[(x, y)] = box, tile
     </code></pre>
+    <aside class="notes">Tk redraws the whole PhotoImage after every paste, so painter splits the image into 32-pixel tiles and only redraws the ones that change.</aside>
   </section>
 
   <!-- make_hash -->
@@ -250,6 +263,7 @@ def hash(s, i):
         i = (((i << 5) + i) ^ ord(c)) & 0xFFFFFFFF
     return i
     </code></pre>
+    <aside class="notes">make_hash is a developer tool that searches for a collision-free hash table for the image modes used in Pillow's C code.</aside>
   </section>
 
   <!-- History -->
@@ -265,6 +279,7 @@ def hash(s, i):
       </tbody>
     </table>
     <p class="small">Contributors include Andrew Murray, Hugo van Kemenade &amp; wiredfool</p>
+    <aside class="notes">The scripts were written in the 1990s, moved into their own repo in 2017, and have only needed small updates since.</aside>
   </section>
 
   <!-- Wrap up -->
@@ -277,6 +292,7 @@ pildriver.py show rotate 90 open cat.png
     </code></pre>
     <p>Comments and contributions are welcome</p>
     <p class="small">github.com/python-pillow/pillow-scripts · Standard PIL License</p>
+    <aside class="notes">Installing the package also pulls in Pillow, and every script lands on your PATH with a .py suffix.</aside>
   </section>
 
 </div>
