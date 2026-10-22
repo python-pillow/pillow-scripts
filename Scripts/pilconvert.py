@@ -16,7 +16,6 @@
 from __future__ import print_function
 
 import getopt
-import string
 import sys
 
 from PIL import Image
@@ -80,7 +79,7 @@ for o, a in opt:
     elif o == "-o":
         options["optimize"] = 1
     elif o == "-q":
-        options["quality"] = string.atoi(a)
+        options["quality"] = int(a)
 
 if len(argv) != 2:
     usage()

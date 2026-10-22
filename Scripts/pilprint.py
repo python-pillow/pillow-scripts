@@ -82,7 +82,8 @@ for filepath in argv:
             p = subprocess.Popen(printerArgs, stdin=subprocess.PIPE)
             fp = p.stdin
         else:
-            fp = sys.stdout
+            # PostScript is written as bytes
+            fp = getattr(sys.stdout, "buffer", sys.stdout)
 
         ps = PSDraw.PSDraw(fp)
 
