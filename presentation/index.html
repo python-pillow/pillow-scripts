@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pillow Scripts</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+
+  <style>
+    :root {
+      --r-main-font-size: 34px;
+      --accent: #f5c542;
+    }
+    .reveal h1, .reveal h2, .reveal h3 { text-transform: none; }
+    .reveal h1 { color: var(--accent); }
+    .reveal .subtitle { color: #bbb; font-size: 0.8em; }
+    .reveal .small { font-size: 0.6em; color: #aaa; }
+    .reveal pre { width: 100%; font-size: 0.5em; box-shadow: none; }
+    .reveal pre code { max-height: 560px; padding: 0.8em; border-radius: 6px; }
+    .reveal table { font-size: 0.6em; }
+    .reveal table th { color: var(--accent); }
+    .reveal code { color: var(--accent); }
+    .reveal pre code { color: inherit; }
+    .reveal .cols { display: flex; gap: 1.2em; text-align: left; }
+    .reveal .cols > div { flex: 1; }
+    .reveal .tag {
+      display: inline-block; padding: 0.1em 0.5em; border-radius: 4px;
+      font-size: 0.55em; background: #333; color: var(--accent); vertical-align: middle;
+    }
+    .reveal ul { font-size: 0.85em; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- Title -->
+  <section>
+    <h1>Pillow Scripts</h1>
+    <p class="subtitle">The classic PIL command-line utilities &amp; Tk demos,<br>kept alive for the Pillow era</p>
+    <p class="small"><code>pip install pillow-scripts</code> · github.com/python-pillow/pillow-scripts</p>
+  </section>
+
+  <!-- What is it -->
+  <section>
+    <h2>What is it?</h2>
+    <ul>
+      <li>A collection of "more or less trivial utilities and demo programs"</li>
+      <li>Originally shipped with PIL by Fredrik Lundh (1995&ndash;2003)</li>
+      <li>Lived in the main Pillow repo until <strong>December 2017</strong></li>
+      <li>Split out from <code>Pillow@9fcc58d</code> into its own package</li>
+      <li>Every <code>Scripts/*.py</code> is installed onto your <code>PATH</code></li>
+    </ul>
+    <aside class="notes">Pillow core no longer ships these; this repo preserves them as a separate PyPI package.</aside>
+  </section>
+
+  <!-- Inventory -->
+  <section>
+    <h2>What's in the box</h2>
+    <table>
+      <thead><tr><th>Category</th><th>Scripts</th></tr></thead>
+      <tbody>
+        <tr><td>File utilities</td><td><code>pilconvert</code> · <code>pilfile</code> · <code>pilfont</code> · <code>pilprint</code></td></tr>
+        <tr><td>Animation</td><td><code>gifmaker</code> · <code>explode</code></td></tr>
+        <tr><td>Scripting</td><td><code>pildriver</code></td></tr>
+        <tr><td>Tk demos</td><td><code>viewer</code> · <code>player</code> · <code>enhancer</code> · <code>thresholder</code> · <code>painter</code></td></tr>
+        <tr><td>Developer helper</td><td><code>make_hash</code></td></tr>
+      </tbody>
+    </table>
+    <p class="small">13 scripts · ~1,500 lines of Python</p>
+  </section>
+
+  <!-- File utilities (vertical stack) -->
+  <section>
+    <section>
+      <h2>File utilities</h2>
+      <p>Small, focused CLIs in the Unix tradition</p>
+      <p class="small">Press &darr; to explore each one</p>
+    </section>
+
+    <section>
+      <h3><code>pilconvert</code> <span class="tag">0.5 · 1998</span></h3>
+      <p>Convert between any formats Pillow understands</p>
+      <pre><code class="language-bash" data-trim>
+# format inferred from the extension
+pilconvert.py photo.tiff photo.png
+
+# greyscale, optimized JPEG at quality 85
+pilconvert.py -g -o -q 85 photo.png photo.jpg
+
+# list supported formats
+pilconvert.py -f
+      </code></pre>
+      <p class="small"><code>-c</code> format · <code>-g</code> grey · <code>-p</code> palette · <code>-r</code> RGB · <code>-o</code> optimize · <code>-q</code> quality</p>
+    </section>
+
+    <section>
+      <h3><code>pilfile</code> <span class="tag">0.4 · 2003</span></h3>
+      <p>Identify image files: format, size and mode</p>
+      <pre><code class="language-bash" data-trim>
+$ pilfile.py *.png
+logo.png: PNG 512x512 RGBA
+icon.png: PNG 32x32 P
+
+# verify headers, show info + tile data
+$ pilfile.py -v -i scan.tif
+      </code></pre>
+      <p class="small"><code>-f</code> formats · <code>-i</code> info · <code>-v</code> verify · <code>-q</code> quiet</p>
+    </section>
+
+    <section>
+      <h3><code>pilfont</code> <span class="tag">0.4 · 2002</span></h3>
+      <p>Compile X11 <strong>BDF</strong> and <strong>PCF</strong> fonts into PIL raster fonts</p>
+      <pre><code class="language-bash" data-trim>
+pilfont.py "fonts/*.bdf"
+# -> writes .pil + .pbm pairs for ImageFont.load()
+      </code></pre>
+    </section>
+
+    <section>
+      <h3><code>pilprint</code> <span class="tag">0.3 · 2003</span></h3>
+      <p>Render images to PostScript via <code>PSDraw</code></p>
+      <pre><code class="language-bash" data-trim>
+# PostScript to stdout
+pilprint.py photo.jpg > photo.ps
+
+# colour, straight to a named printer via lpr
+pilprint.py -c -P office photo.jpg
+      </code></pre>
+      <p class="small"><code>-c</code> colour · <code>-d</code> debug · <code>-p</code> lpr · <code>-P</code> printer</p>
+    </section>
+  </section>
+
+  <!-- Animation -->
+  <section>
+    <h2>Animation</h2>
+    <div class="cols">
+      <div>
+        <h3><code>gifmaker</code></h3>
+        <p class="small">Any sequence format &rarr; animated GIF.<br>Now a one-liner thanks to <code>save_all=True</code>.</p>
+        <pre><code class="language-python" data-trim>
+im = Image.open(sys.argv[1])
+im.save(sys.argv[2], save_all=True)
+        </code></pre>
+      </div>
+      <div>
+        <h3><code>explode</code></h3>
+        <p class="small">Split an animation into frame files, with optional frame ranges.</p>
+        <pre><code class="language-bash" data-trim>
+explode.py anim.gif frame%03d.png
+explode.py anim.gif f.png 1-10,15
+        </code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- pildriver -->
+  <section>
+    <section>
+      <h2><code>pildriver</code></h2>
+      <p>An image-processing <strong>calculator</strong> by Eric S. Raymond</p>
+      <ul>
+        <li>A stack machine &mdash; Polish (prefix) notation</li>
+        <li>Tokens are pushed, then evaluated right-to-left</li>
+        <li>Run with arguments, or interactively as a REPL</li>
+        <li>Deliberately doesn't catch exceptions: errors are diagnostics</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Reading right to left</h3>
+      <pre><code class="language-bash" data-trim>
+# open test.png, crop the top-left corner, show it
+pildriver.py show crop 0 0 200 300 open test.png
+
+# open test.tiff, rotate 30°, save as PNG
+pildriver.py save rotated.png rotate 30 open test.tiff
+
+# interactive
+$ pildriver.py
+pildriver> verbose 1
+pildriver> thumbnail 128 128 open big.jpg
+      </code></pre>
+    </section>
+
+    <section>
+      <h3>Operators</h3>
+      <table>
+        <tbody>
+          <tr><th>Stack</th><td>clear · pop · dup · swap · verbose</td></tr>
+          <tr><th>I/O</th><td>new · open · save · show</td></tr>
+          <tr><th>Geometry</th><td>crop · resize · rotate · thumbnail · transpose · offset · paste</td></tr>
+          <tr><th>Pixels</th><td>convert · copy · draft · filter · blend · composite · merge</td></tr>
+          <tr><th>Query</th><td>format · mode · size · getbbox · getextrema</td></tr>
+          <tr><th>ImageChops</th><td>invert · lighter · darker · difference · multiply · screen · add · subtract</td></tr>
+          <tr><th>ImageEnhance</th><td>color · contrast · brightness · sharpness</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+
+  <!-- Tk demos -->
+  <section>
+    <h2>Tk demos</h2>
+    <p class="small">Pillow + <code>ImageTk</code> + tkinter (Python 2 &amp; 3)</p>
+    <table>
+      <tbody>
+        <tr><th><code>viewer</code></th><td>Display any supported file; 1-bit images via <code>BitmapImage</code></td></tr>
+        <tr><th><code>player</code></th><td>Play FLI/FLC, GIF or a list of frames, honouring each frame's <code>duration</code></td></tr>
+        <tr><th><code>enhancer</code></th><td>Four windows with sliders for <code>ImageEnhance</code> colour, contrast, brightness, sharpness</td></tr>
+        <tr><th><code>thresholder</code></th><td>A live 1-bit overlay showing an 8-bit threshold</td></tr>
+        <tr><th><code>painter</code></th><td>A paint program; 32&times;32 tiles keep Tk redraws fast</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h3>Trick from <code>painter.py</code></h3>
+    <p class="small">Tk repaints the whole PhotoImage on every paste &mdash; so split it into tiles</p>
+    <pre><code class="language-python" data-trim data-line-numbers="2,5-7">
+self.tile = {}
+self.tilesize = tilesize = 32
+xsize, ysize = image.size
+for x in range(0, xsize, tilesize):
+    for y in range(0, ysize, tilesize):
+        box = x, y, min(xsize, x+tilesize), min(ysize, y+tilesize)
+        tile = ImageTk.PhotoImage(image.crop(box))
+        self.create_image(x, y, image=tile, anchor=tkinter.NW)
+        self.tile[(x, y)] = box, tile
+    </code></pre>
+  </section>
+
+  <!-- make_hash -->
+  <section>
+    <h2><code>make_hash</code></h2>
+    <p class="small">The newest script (2021) &mdash; a helper for Pillow's C core</p>
+    <ul>
+      <li>Brute-forces a collision-free hash table for the 21 image modes</li>
+      <li>djb2 variant: multiply by 33, XOR the character</li>
+      <li>Emits <code>ACCESS_TABLE_SIZE</code> and <code>ACCESS_TABLE_HASH</code></li>
+    </ul>
+    <pre><code class="language-python" data-trim>
+def hash(s, i):
+    # djb2 hash: multiply by 33 and xor character
+    for c in s:
+        i = (((i << 5) + i) ^ ord(c)) & 0xFFFFFFFF
+    return i
+    </code></pre>
+  </section>
+
+  <!-- History -->
+  <section>
+    <h2>A short history</h2>
+    <table>
+      <tbody>
+        <tr><th>1995&ndash;2003</th><td>Written for PIL by Fredrik Lundh / Secret Labs AB</td></tr>
+        <tr><th>Dec 2017</th><td>Forked from Pillow into <code>pillow-scripts</code>; license added</td></tr>
+        <tr><th>Nov 2018</th><td><code>explode</code> HTML output cleaned up and validated</td></tr>
+        <tr><th>Mar 2019</th><td>Python version classifiers updated</td></tr>
+        <tr><th>Aug 2021</th><td><code>make_hash</code> helper added</td></tr>
+      </tbody>
+    </table>
+    <p class="small">Contributors include Andrew Murray, Hugo van Kemenade &amp; wiredfool</p>
+  </section>
+
+  <!-- Wrap up -->
+  <section>
+    <h2>Try it</h2>
+    <pre><code class="language-bash" data-trim>
+pip install pillow-scripts
+pilfile.py ~/Pictures/*.jpg
+pildriver.py show rotate 90 open cat.png
+    </code></pre>
+    <p>Comments and contributions are welcome</p>
+    <p class="small">github.com/python-pillow/pillow-scripts · Standard PIL License</p>
+  </section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    plugins: [RevealHighlight, RevealNotes]
+  });
+</script>
+</body>
+</html>
