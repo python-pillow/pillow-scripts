@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pillow-scripts"
-version = "5.0.0"
+version = "13.0.0"
 description = "Python Imaging Library (Fork) Scripts"
 readme = "README.rst"
 license = "MIT-CMU"
